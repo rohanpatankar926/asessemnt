@@ -1,0 +1,7 @@
+version: "1"
+services: 
+  diffusion_script1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["./scripts/finetune_real.sh"]

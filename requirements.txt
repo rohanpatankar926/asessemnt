@@ -1,0 +1,7 @@
+pip-chill
+wandb
+einops
+torch
+contextlib
+ldm
+
