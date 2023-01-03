@@ -48,7 +48,7 @@ def sample():
     subprocess.run(["python","sample.py"]+args)
     return "sample.py script is running"
 
-@app.route("/train")
+@app.get("/train")
 def train():
     params = request.args.to_dict()
     args=[]
