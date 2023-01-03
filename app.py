@@ -19,6 +19,8 @@ class Call:
 def index():
     return 'Hello diffusion'
 
+
+#api for running sh scripts
 @app.get('scripts/<script>')
 def script(script):
     try:
@@ -43,10 +45,11 @@ def script(script):
         return jsonify({"error":str(e)}), 500
 
 
+#api for running with client parameters
 @app.get("/sample")
 def sample():
     try:
-        user_params = request.get_json()
+        user_params = request.args.to_dict()
         args=[]
         for name,val in user_params.items():
             args.append("--{}".format(name))
@@ -58,10 +61,12 @@ def sample():
         print(e)
         return jsonify({"error":str(e)}), 500
 
+
+#api for training with client parameters
 @app.get("/train")
 def train():
     try:
-        params = request.get_json()
+        params = request.args.to_dict()
         args=[]
         for name,val in params.items():
             args.append("--{}".format(name))
@@ -72,3 +77,7 @@ def train():
     except Exception as e:
         print(e)
         return jsonify({"error":str(e)}), 500
+
+
+if __name__=="__main__":
+    app.run(debug=True,host="localhost",port=5000)
