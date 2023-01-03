@@ -1,9 +1,8 @@
 from flask import Flask
 from flask import request
-from sample import main
 import os
+import subprocess
 from flask_cors import CORS
-from flask import main
 app = Flask(__name__)
 CORS(app)
 
@@ -19,7 +18,7 @@ class Call:
 def index():
     return 'Hello diffusion'
 
-@app.get('/<script>')
+@app.get('scripts/<script>')
 def script(script):
     if script=="finetune_gen.sh":
         print("finetune_gen.sh is running")
@@ -38,7 +37,24 @@ def script(script):
         return f"done executing {script}"
 
 
-@app.post("/sample")
+@app.get("/sample")
 def sample():
-    print("sample is running")
-    return main()
+    user_params = request.args.to_dict()
+    args=[]
+    for name,val in user_params.items():
+        args.append("--{}".format(name))
+        args.append(val)
+    print(args)
+    subprocess.run(["python","sample.py"]+args)
+    return "sample.py script is running"
+
+@app.route("/train")
+def train():
+    params = request.args.to_dict()
+    args=[]
+    for name,val in params.items():
+        args.append("--{}".format(name))
+        args.append(val)
+    print(args)
+    subprocess.run(["python","train.py"]+args)
+    return "train.py script is running"
