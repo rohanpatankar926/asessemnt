@@ -48,20 +48,13 @@ def sample():
     return a
 @app.route('/run_script')
 def run_script():
-    # Get the list of parameters
     params = request.args.to_dict()
-
-    # Create a list of command-line arguments for the script
     args = []
     for name, value in params.items():
-        # Append the parameter name and value to the list
         args.append("--{}".format(name))
         args.append(value)
     print(args)
-
-    # Run the script with the provided parameters
     subprocess.run(["python", "d.py"] + args)
-
     return "Script executed successfully!"
 
 if __name__ == '__main__':
